@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block titulo %}Entrar{% endblock %}
+{% block conteudo %}
+<section class="cartao estreito">
+  <h1>Entrar no AgendaLab</h1>
+  <form method="post">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <label for="login">Login</label>
+    <input id="login" name="login" autocomplete="username" required value="{{ login }}">
+    <label for="senha">Senha</label>
+    <input id="senha" name="senha" type="password" autocomplete="current-password" required>
+    <button type="submit" class="botao">Entrar</button>
+  </form>
+  <p>Ainda não tem conta? <a href="{{ url_for('auth.cadastro') }}">Cadastre-se</a>.</p>
+</section>
+{% endblock %}

@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block conteudo %}
+<form method="get">
+<input name="data" placeholder="aaaa-mm-dd" value="{{ data }}"> <button class="btn">Buscar</button>
+</form>
+<table>
+{% for r in reservas %}
+<tr>
+<td>{{ r.data }}</td><td>{{ r.hora_inicio }}</td><td>{{ r.hora_fim }}</td><td>{{ r.sala }}</td><td>{{ r.usuario }}</td>
+<td>{{ r.motivo|safe }}</td>
+<td><form method="post" action="/reservas/{{ r.id }}/excluir"><button class="btn">X</button></form></td>
+</tr>
+{% endfor %}
+</table>
+{% endblock %}

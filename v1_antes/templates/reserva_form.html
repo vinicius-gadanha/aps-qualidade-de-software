@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block conteudo %}
+<form method="post">
+<select name="sala_id">
+{% for s in salas %}<option value="{{ s[0] }}">{{ s[1] }}</option>{% endfor %}
+</select><br>
+<input name="data" placeholder="aaaa-mm-dd"><br>
+<input name="hora_inicio" placeholder="hh:mm"> <input name="hora_fim" placeholder="hh:mm"><br>
+<input name="motivo" placeholder="motivo"><br>
+<button class="btn">OK</button>
+</form>
+{% if erro %}<div class="erro">{{ erro }}</div>{% endif %}
+{% endblock %}

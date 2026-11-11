@@ -1,0 +1,29 @@
+<html>
+<head>
+<title>AgendaLab</title>
+<style>
+body { font-family: Arial; color: #999; background: #fff; margin: 0; }
+.topo { background: #6fa8dc; padding: 10px; }
+.topo a { color: #cfe2f3; margin-right: 10px; text-decoration: none; font-size: 12px; }
+table { border-collapse: collapse; }
+td { border: 1px solid #ddd; padding: 4px; font-size: 11px; }
+input, select { border: 1px solid #eee; padding: 3px; margin: 2px; }
+.btn { background: #b6d7a8; color: #fff; border: none; padding: 4px 8px; }
+.erro { color: #f4cccc; }
+</style>
+</head>
+<body>
+<div class="topo">
+{% if session.usuario_id %}
+<a href="/reservas">Reservas</a> <a href="/reservas/nova">Nova</a> <a href="/salas">Salas</a>
+{% if session.perfil == 'admin' %}<a href="/salas/nova">+ Sala</a> <a href="/relatorio">Relatório</a>{% endif %}
+<a href="/logout">Sair</a>
+{% else %}
+<b>AgendaLab</b>
+{% endif %}
+</div>
+<div style="padding:10px">
+{% block conteudo %}{% endblock %}
+</div>
+</body>
+</html>

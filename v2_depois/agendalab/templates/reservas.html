@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% block titulo %}Reservas{% endblock %}
+{% block conteudo %}
+<div class="cabecalho-pagina">
+  <h1>Reservas</h1>
+  <a class="botao" href="{{ url_for('reservas.nova') }}">+ Nova reserva</a>
+</div>
+<form method="get" class="filtro" role="search" aria-label="Filtrar reservas">
+  <label for="data">Filtrar por data</label>
+  <input id="data" name="data" type="date" value="{{ data }}">
+  <button type="submit" class="botao secundario">Filtrar</button>
+  {% if data %}<a href="{{ url_for('reservas.listar') }}">Limpar filtro</a>{% endif %}
+</form>
+{% if reservas %}
+<div class="tabela-rolavel">
+  <table class="responsiva">
+    <caption>{{ total }} reserva(s){% if data %} em {{ data|data_br }}{% endif %}</caption>
+    <thead>
+      <tr>
+        <th scope="col">Data</th><th scope="col">Horário</th><th scope="col">Sala</th>
+        <th scope="col">Responsável</th><th scope="col">Motivo</th><th scope="col">Ações</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for r in reservas %}
+      <tr>
+        <td data-label="Data">{{ r.data|data_br }}</td>
+        <td data-label="Horário">{{ r.hora_inicio }}–{{ r.hora_fim }}</td>
+        <td data-label="Sala">{{ r.sala }}</td>
+        <td data-label="Responsável">{{ r.usuario }}</td>
+        <td data-label="Motivo">{{ r.motivo }}</td>
+        <td data-label="Ações">
+          {% if g.usuario.perfil == 'admin' or r.usuario_id == g.usuario.id %}
+          <form method="post" action="{{ url_for('reservas.excluir', reserva_id=r.id) }}"
+                data-confirmar="Cancelar a reserva da sala {{ r.sala }} em {{ r.data|data_br }}, {{ r.hora_inicio }}?">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <button type="submit" class="botao perigo pequeno">Cancelar</button>
+          </form>
+          {% else %}<span class="discreto">—</span>{% endif %}
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% if paginas > 1 %}
+<nav class="paginacao" aria-label="Paginação">
+  {% if pagina > 1 %}<a href="{{ url_for('reservas.listar', data=data or None, pagina=pagina - 1) }}">« Anterior</a>{% endif %}
+  <span>Página {{ pagina }} de {{ paginas }}</span>
+  {% if pagina < paginas %}<a href="{{ url_for('reservas.listar', data=data or None, pagina=pagina + 1) }}">Próxima »</a>{% endif %}
+</nav>
+{% endif %}
+{% else %}
+<p class="vazio">Nenhuma reserva encontrada{% if data %} em {{ data|data_br }}{% endif %}.
+  <a href="{{ url_for('reservas.nova') }}">Fazer uma reserva</a>.</p>
+{% endif %}
+{% endblock %}

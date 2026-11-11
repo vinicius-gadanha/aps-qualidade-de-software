@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="AgendaLab: reserva de salas e laboratórios">
+  <title>{% block titulo %}Início{% endblock %} | AgendaLab</title>
+  <link rel="icon" type="image/svg+xml" href="{{ url_for('static', filename='favicon.svg') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='estilo.css') }}">
+  <script src="{{ url_for('static', filename='app.js') }}" defer></script>
+</head>
+<body>
+  <a class="pular" href="#conteudo">Pular para o conteúdo</a>
+  <header class="topo">
+    <a class="marca" href="{{ url_for('auth.inicio') }}">AgendaLab</a>
+    {% if g.usuario %}
+    <nav aria-label="Menu principal">
+      <ul>
+        <li><a href="{{ url_for('reservas.listar') }}" {% if request.endpoint == 'reservas.listar' %}aria-current="page"{% endif %}>Reservas</a></li>
+        <li><a href="{{ url_for('reservas.nova') }}" {% if request.endpoint == 'reservas.nova' %}aria-current="page"{% endif %}>Nova reserva</a></li>
+        <li><a href="{{ url_for('salas.listar') }}" {% if request.endpoint and request.endpoint.startswith('salas.') %}aria-current="page"{% endif %}>Salas</a></li>
+        {% if g.usuario.perfil == 'admin' %}
+        <li><a href="{{ url_for('relatorio.ocupacao') }}" {% if request.endpoint == 'relatorio.ocupacao' %}aria-current="page"{% endif %}>Relatório</a></li>
+        {% endif %}
+      </ul>
+    </nav>
+    <div class="usuario">
+      <span>{{ g.usuario.nome }}</span>
+      <a href="{{ url_for('auth.logout') }}">Sair</a>
+    </div>
+    {% endif %}
+  </header>
+  <main id="conteudo">
+    {% with mensagens = get_flashed_messages(with_categories=true) %}
+      {% for categoria, mensagem in mensagens %}
+      <div class="mensagem {{ categoria }}" role="{{ 'alert' if categoria == 'erro' else 'status' }}">{{ mensagem }}</div>
+      {% endfor %}
+    {% endwith %}
+    {% block conteudo %}{% endblock %}
+  </main>
+  <footer class="rodape">AgendaLab 2.0 · Reserva de salas e laboratórios</footer>
+</body>
+</html>

@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block titulo %}Cadastrar sala{% endblock %}
+{% block conteudo %}
+<section class="cartao estreito">
+  <h1>Cadastrar sala</h1>
+  {% include "_erros.html" %}
+  <form method="post">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <label for="nome">Nome da sala</label>
+    <input id="nome" name="nome" required minlength="2" maxlength="60" placeholder="Ex.: Laboratório 3" value="{{ dados.get('nome', '') }}">
+    <label for="capacidade">Capacidade (lugares)</label>
+    <input id="capacidade" name="capacidade" type="number" min="1" max="500" required value="{{ dados.get('capacidade', '') }}">
+    <label for="tipo">Tipo</label>
+    <select id="tipo" name="tipo" required>
+      <option value="">Selecione o tipo</option>
+      {% for tipo in tipos %}
+      <option {% if dados.get('tipo') == tipo %}selected{% endif %}>{{ tipo }}</option>
+      {% endfor %}
+    </select>
+    <div class="acoes">
+      <button type="submit" class="botao">Salvar sala</button>
+      <a href="{{ url_for('salas.listar') }}">Voltar</a>
+    </div>
+  </form>
+</section>
+{% endblock %}

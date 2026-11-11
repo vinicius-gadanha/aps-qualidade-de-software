@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block titulo %}Relatório de ocupação{% endblock %}
+{% block conteudo %}
+<h1>Relatório de ocupação</h1>
+<form method="get" class="filtro" aria-label="Escolher mês do relatório">
+  <label for="mes">Mês</label>
+  <input id="mes" name="mes" type="month" value="{{ mes }}">
+  <button type="submit" class="botao secundario">Atualizar</button>
+</form>
+{% if relatorio %}
+<div class="tabela-rolavel">
+  <table class="responsiva">
+    <caption>Ocupação por sala em {{ mes[5:] }}/{{ mes[:4] }} (base: 16 h por dia, de segunda a sábado)</caption>
+    <thead>
+      <tr><th scope="col">Sala</th><th scope="col">Reservas</th><th scope="col">Horas reservadas</th>
+          <th scope="col">Ocupação</th><th scope="col">Nível</th></tr>
+    </thead>
+    <tbody>
+      {% for linha in relatorio %}
+      <tr>
+        <td data-label="Sala">{{ linha.sala }}</td>
+        <td data-label="Reservas">{{ linha.total }}</td>
+        <td data-label="Horas reservadas">{{ linha.horas|numero_br }} h</td>
+        <td data-label="Ocupação">{{ linha.ocupacao|numero_br }}%</td>
+        <td data-label="Nível"><span class="nivel {{ linha.nivel|lower }}">{{ linha.nivel }}</span></td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% else %}
+<p class="vazio">Nenhuma sala cadastrada.</p>
+{% endif %}
+{% endblock %}

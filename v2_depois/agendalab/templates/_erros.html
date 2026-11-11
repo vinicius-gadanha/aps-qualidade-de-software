@@ -1,0 +1,8 @@
+{% if erros %}
+<div class="mensagem erro" role="alert">
+  <p><strong>Corrija os itens abaixo para continuar:</strong></p>
+  <ul>
+    {% for erro in erros %}<li>{{ erro }}</li>{% endfor %}
+  </ul>
+</div>
+{% endif %}

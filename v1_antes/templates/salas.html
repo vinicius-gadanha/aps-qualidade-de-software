@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+{% block conteudo %}
+<table>
+{% for s in salas %}
+<tr><td>{{ s[0] }}</td><td>{{ s[1] }}</td><td>{{ s[2] }}</td><td>{{ s[3] }}</td></tr>
+{% endfor %}
+</table>
+{% endblock %}

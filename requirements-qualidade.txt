@@ -1,0 +1,8 @@
+# Dependências para executar o sistema, os testes e as medições de qualidade
+flask>=3.0
+pytest>=8.0
+pytest-cov>=5.0
+radon>=6.0
+pylint>=3.0
+bandit>=1.7
+matplotlib>=3.8

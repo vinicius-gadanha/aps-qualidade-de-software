@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block conteudo %}
+<form method="post">
+<input name="login" placeholder="login"><br>
+<input name="senha" type="password" placeholder="senha"><br>
+<button class="btn">OK</button>
+</form>
+{% if erro %}<div class="erro">{{ erro }}</div>{% endif %}
+<p>Não tem conta? <a href="/cadastro">clique aqui</a></p>
+{% endblock %}

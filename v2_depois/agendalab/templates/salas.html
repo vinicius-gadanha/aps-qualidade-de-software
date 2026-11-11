@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block titulo %}Salas{% endblock %}
+{% block conteudo %}
+<div class="cabecalho-pagina">
+  <h1>Salas e laboratórios</h1>
+  {% if g.usuario.perfil == 'admin' %}<a class="botao" href="{{ url_for('salas.nova') }}">+ Cadastrar sala</a>{% endif %}
+</div>
+{% if salas %}
+<div class="tabela-rolavel">
+  <table class="responsiva">
+    <caption>{{ salas|length }} sala(s) cadastrada(s)</caption>
+    <thead><tr><th scope="col">Nome</th><th scope="col">Tipo</th><th scope="col">Capacidade</th></tr></thead>
+    <tbody>
+      {% for s in salas %}
+      <tr><td data-label="Nome">{{ s.nome }}</td><td data-label="Tipo">{{ s.tipo }}</td><td data-label="Capacidade">{{ s.capacidade }} lugares</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% else %}
+<p class="vazio">Nenhuma sala cadastrada.</p>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block titulo %}Nova reserva{% endblock %}
+{% block conteudo %}
+<section class="cartao">
+  <h1>Nova reserva</h1>
+  {% include "_erros.html" %}
+  {% if not salas %}
+  <p>Nenhuma sala cadastrada ainda. Peça a um administrador para cadastrar as salas.</p>
+  {% else %}
+  <form method="post">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <label for="sala_id">Sala</label>
+    <select id="sala_id" name="sala_id" required>
+      <option value="">Selecione uma sala</option>
+      {% for s in salas %}
+      <option value="{{ s.id }}" {% if dados.get('sala_id') == s.id|string %}selected{% endif %}>{{ s.nome }} ({{ s.tipo }}, {{ s.capacidade }} lugares)</option>
+      {% endfor %}
+    </select>
+    <label for="data">Data</label>
+    <input id="data" name="data" type="date" required min="{{ hoje }}" aria-describedby="dica-data" value="{{ dados.get('data', '') }}">
+    <p class="dica" id="dica-data">O laboratório funciona de segunda a sábado.</p>
+    <div class="linha">
+      <div>
+        <label for="hora_inicio">Início</label>
+        <input id="hora_inicio" name="hora_inicio" type="time" min="07:00" max="23:00" required aria-describedby="dica-horario" value="{{ dados.get('hora_inicio', '') }}">
+      </div>
+      <div>
+        <label for="hora_fim">Término</label>
+        <input id="hora_fim" name="hora_fim" type="time" min="07:00" max="23:00" required aria-describedby="dica-horario" value="{{ dados.get('hora_fim', '') }}">
+      </div>
+    </div>
+    <p class="dica" id="dica-horario">Horário de funcionamento: das 07:00 às 23:00.</p>
+    <label for="motivo">Motivo</label>
+    <input id="motivo" name="motivo" required maxlength="200" placeholder="Ex.: Aula de Banco de Dados" value="{{ dados.get('motivo', '') }}">
+    <div class="acoes">
+      <button type="submit" class="botao">Reservar</button>
+      <a href="{{ url_for('reservas.listar') }}">Voltar para as reservas</a>
+    </div>
+  </form>
+  {% endif %}
+</section>
+{% endblock %}
